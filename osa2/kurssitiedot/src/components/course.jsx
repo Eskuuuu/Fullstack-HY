@@ -15,10 +15,6 @@ const Course = (props) => {
 
       </ul>
 
-      
-      
-       
-      {/*<Total parts={course.parts} />  */} 
     </div>
   )
 }
