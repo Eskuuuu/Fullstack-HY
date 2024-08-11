@@ -4,6 +4,9 @@ import Filter from './components/filter'
 import PersonForm from './components/personform'
 import Persons from './components/persons'
 import personService from './services/persons'
+import Notification from './components/Notification'
+import ErrorNotification from './components/errorNotification'
+import './index.css'
 
 
 const App = () => {
@@ -22,6 +25,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
+  const [succesfulMessage, setSuccesfulMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   const handleNameChange = (event) => {
     console.log(event.target.value)
@@ -43,6 +48,11 @@ const App = () => {
     if (window.confirm(`Do you want to delete ${person.name} ?`)) {
       personService.deletion(id)
       .then(setPersons(persons.filter(person => person.id != id)))
+      setSuccesfulMessage(`${person.name} Deleted succefully`)
+      setTimeout( () => {
+       setSuccesfulMessage(null)
+      }, 5000)
+      
     }
   }
 
@@ -63,8 +73,21 @@ const App = () => {
              setPersons(persons.map(person => person.id ===  updatedPerson.id ? updatedPerson : person ))
              setNewName('')
              setNewNumber('')
-      })
-    }
+             setSuccesfulMessage(`${newName} number changed succefully`)
+             setTimeout( () => {
+              setSuccesfulMessage(null)
+             }, 5000)
+          })
+          .catch( error => {
+              console.log('fail')
+            setErrorMessage(`${newName} was already deleted from the server`)
+            setTimeout( () => {
+              setErrorMessage(null)
+             }, 5000)
+            setPersons(persons.filter( n => n.id !== existingPerson.id))
+          })
+      }
+    
 
     } else {
       personService
@@ -72,7 +95,11 @@ const App = () => {
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
-      })
+          setErrorMessage(`${newName} Added succefully`)
+          setTimeout( () => {
+           setErrorMessage(null)
+          }, 5000)
+          })
     }
 
   }
@@ -86,7 +113,10 @@ const App = () => {
     <div>
       <h1>Phonebook</h1>
 
-
+      <Notification message={errorMessage} />
+      <ErrorNotification message={succesfulMessage} />
+      
+      
 
       <Filter value={newFilter} handleFilterChange={handleFilterChange} />
 
