@@ -57,58 +57,55 @@ const App = () => {
   }
 
   const addName = (event) => {
-    event.preventDefault()
+    event.preventDefault();
     const nameObject = {
       name: newName,
       number: newNumber,
-    }
-
-    const existingPerson = persons.find(person => person.name === newName)
-
-
+    };
+  
+    const existingPerson = persons.find(person => person.name === newName);
+  
     if (existingPerson) {
-      if (window.confirm(`${newName} is already added to phonebook, replace the old number with the new one?`)){
-        personService.update( existingPerson.id, nameObject)
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with the new one?`)) {
+        personService.update(existingPerson.id, nameObject)
           .then(updatedPerson => {
-             setPersons(persons.map(person => person.id ===  updatedPerson.id ? updatedPerson : person ))
-             setNewName('')
-             setNewNumber('')
-             setSuccesfulMessage(`${newName} number changed succefully`)
-             setTimeout( () => {
-              setSuccesfulMessage(null)
-             }, 5000)
+            setPersons(persons.map(person => person.id === updatedPerson.id ? updatedPerson : person));
+            setNewName('');
+            setNewNumber('');
+            setSuccesfulMessage(`${newName} number changed successfully`);
+            setTimeout(() => {
+              setSuccesfulMessage(null);
+            }, 5000);
           })
-          .catch( error => {
-              console.log('fail')
-            setErrorMessage(`${newName} was already deleted from the server`)
-            setTimeout( () => {
-              setErrorMessage(null)
-             }, 5000)
-            setPersons(persons.filter( n => n.id !== existingPerson.id))
-          })
+          .catch(error => {
+            setErrorMessage(`${newName} was already deleted from the server`);
+            setTimeout(() => {
+              setErrorMessage(null);
+            }, 5000);
+            setPersons(persons.filter(n => n.id !== existingPerson.id));
+          });
       }
-    
-
     } else {
       personService
         .create(nameObject)
         .then(returnedPerson => {
-          setPersons(persons.concat(returnedPerson))
-          setNewName('')
-          setErrorMessage(`${newName} Added succefully`)
-          setTimeout( () => {
-           setErrorMessage(null)
-          }, 5000)
-          })
-        .catch(error => 
-          console.log(error.response.data.error))
-          setErrorMessage( error.response.data.error)
-            setTimeout( () => {
-              setErrorMessage(null)
-             }, 5000)
+          setPersons(persons.concat(returnedPerson));
+          setNewName('');
+          setNewNumber('');
+          setSuccesfulMessage(`${newName} added successfully`);
+          setTimeout(() => {
+            setSuccesfulMessage(null);
+          }, 5000);
+        })
+        .catch((error) => {
+          console.error(error.response.data); 
+          setErrorMessage(error.response.data.error || 'An unexpected error occurred');
+          setTimeout(() => {
+            setErrorMessage(null);
+          }, 5000);
+        });
     }
-
-  }
+  };
 
   const filterPersons = persons.filter(person =>
    person.name.toLowerCase().includes(newFilter.toLowerCase())
