@@ -99,7 +99,7 @@ const App = () => {
         })
         .catch((error) => {
           console.error(error.response.data); 
-          setErrorMessage(error.response.data.error || 'An unexpected error occurred');
+          setErrorMessage(error.response.data || 'An unexpected error occurred');
           setTimeout(() => {
             setErrorMessage(null);
           }, 5000);
