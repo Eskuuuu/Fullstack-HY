@@ -116,8 +116,8 @@ const App = () => {
     <div>
       <h1>Phonebook</h1>
 
-      <Notification message={errorMessage} />
-      <ErrorNotification message={succesfulMessage} />
+      <Notification message={succesfulMessage} />
+      <ErrorNotification message={errorMessage} />
       
       
 
