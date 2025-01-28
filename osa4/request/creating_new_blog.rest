@@ -1,0 +1,11 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkVza3UiLCJpZCI6IjY3OTkzODgxMGJjYWE5NjUwYjQzNTE3YiIsImlhdCI6MTczODA5NDcyOH0.pg00GYPy8LeMBo6iCW4yXoJgk5BHY0jqEoK3XFOGqZE
+
+{
+  "title": "testi3",
+  "author": "testityyppi",
+  "url": "joku3.fi",
+  "likes": 2,
+  "userid": "67993669a20eae072c46045c"
+}
